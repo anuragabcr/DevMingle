@@ -2,5 +2,11 @@
 {% block content %}
 
 <h1>Single Project</h1>
+<h4>Title: {{project.title}}</h4>
+<h4>Description: {{project.description}}</h4>
+<h4>Total Vote: {{project.vote_total}}</h4>
+{% for tag in tags%}
+    <h3>{{tag.name}}</h3>
+{% endfor%}
 
 {% endblock content %}
