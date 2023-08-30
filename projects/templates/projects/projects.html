@@ -4,7 +4,11 @@
 <h1>All Projects</h1>
 <ul>
 {% for project in projects%}
-    <li>Title: <a href="{% url 'project' project.id %}">{{project.title}}</a></li>
+    <li>Title: {{project.title}}
+        <a href="{% url 'project' project.id %}">View</a>
+        <a href="{% url 'update-project' project.id %}">Update</a>
+        <a href="{% url 'delete-project' project.id %}">Delete</a>
+    </li>
 {% endfor%}
 </ul>
 {% endblock content %}
