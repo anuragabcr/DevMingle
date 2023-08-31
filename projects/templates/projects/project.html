@@ -1,12 +1,89 @@
 {% extends 'main.html' %}
 {% block content %}
 
-<h1>Single Project</h1>
-<h4>Title: {{project.title}}</h4>
-<h4>Description: {{project.description}}</h4>
-<h4>Total Vote: {{project.vote_total}}</h4>
-{% for tag in tags%}
-    <h3>{{tag.name}}</h3>
-{% endfor%}
+<main class="singleProject my-md">
+    <div class="container">
+      <div class="layout">
+        <div class="column column--1of3">
+          <h3 class="singleProject__subtitle">Tools & Stacks</h3>
+          <div class="singleProject__toolStack">
+              {% for tag in tags%}
+            <span class="tag tag--pill tag--sub tag--lg">
+              <small>{{tag.name}}</small>
+            </span>
+              {% endfor%}
+          </div>
+          {% if project.source_link %}
+          <a class="singleProject__liveLink" href="{{project.source_link}}" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            Source Code
+          </a>
+          {% endif %}
+          <br><br>
+          {% if project.demo_link %}
+          <a class="singleProject__liveLink" href="{{project.demo_link}}" target="_blank">
+            <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M14 4h-13v18h20v-11h1v12h-22v-20h14v1zm10 5h-1v-6.293l-11.646 11.647-.708-.708 11.647-11.646h-6.293v-1h8v8z"/></svg>
+            Live Website
+          </a>
+          {% endif %}
+        </div>
+        <div class="column column--2of3">
+          <img class="singleProject__preview" src="{{project.featured_image.url}}" alt="portfolio thumbnail" />
+          <a href="profile.html" class="singleProject__developer">Md. Shahriar Parvez</a>
+          <h2 class="singleProject__title">{{project.title}}</h2>
+          <h3 class="singleProject__subtitle">About the Project</h3>
+          <div class="singleProject__info">
+            {{project.description}}
+          </div>
+
+          <div class="comments">
+            <h3 class="singleProject__subtitle">Feedback</h3>
+            <h5 class="project--rating">
+              {{project.vote_ratio}}% Positive Feedback ({{project.vote_total}} Vote{{ project.vote_total|pluralize:"s" }})
+            </h5>
+
+            <form class="form" action="#" method="POST">
+              <!-- Textarea -->
+              <div class="form__field">
+                <label for="formInput#textarea">Comments: </label>
+                <textarea class="input input--textarea" name="message" id="formInput#textarea"
+                  placeholder="Write your comments here..."></textarea>
+              </div>
+              <input class="btn btn--sub btn--lg" type="submit" value="Comments" />
+            </form>
+            <div class="commentList">
+              <div class="comment">
+                <a href="profile.html">
+                  <img class="avatar avatar--md"
+                    src="https://pbs.twimg.com/profile_images/1335382240931368961/b3wSZKj4_400x400.jpg" alt="user" />
+                </a>
+                <div class="comment__details">
+                  <a href="profile.html" class="comment__author">Sulamita Ivanov</a>
+                  <p class="comment__info">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit alias numquam perferendis
+                    mollitia minus minima exercitationem possimus ab deserunt qui, soluta iusto doloribus eveniet
+                    similique consequuntur ratione, dignissimos ut magni laborum quo.
+                  </p>
+                </div>
+              </div>
+              <div class="comment">
+                <a href="profile.html">
+                  <img class="avatar avatar--md" src="https://avatars.githubusercontent.com/u/33843378" alt="user" />
+                </a>
+                <div class="comment__details">
+                  <a href="profile.html" class="comment__author">Dennis Ivanov</a>
+                  <p class="comment__info">
+                    Consectetur adipisicing elit. Reprehenderit alias numquam perferendis mollitia minus minima
+                    exercitationem possimus ab deserunt qui, ratione, dignissimos ut magni laborum quo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </main>
 
 {% endblock content %}
