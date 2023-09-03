@@ -9,12 +9,9 @@ def createProfile(sender, instance, created, **kwargs):
         profile = Profile.objects.create(
             user=user,
             username=user.username,
+            email=user.email,
+            name=user.first_name + ' ' + user.last_name,
         )
-    else:
-        profile = Profile.objects.get(user=user)
-        profile.email = user.email
-        profile.name = user.first_name + ' ' + user.last_name
-        profile.save()
 
 
 def deleteUser(sender, instance, **kwargs):
