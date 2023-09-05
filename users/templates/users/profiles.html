@@ -11,11 +11,11 @@
         </div>
 
         <div class="hero-section__search">
-          <form class="form" action="#" method="get">
+          <form class="form" action="{% url 'profiles' %}" method="get">
             <div class="form__field">
               <label for="formInput#search">Search Developers </label>
-              <input class="input input--text" id="formInput#search" type="text" name="text"
-                placeholder="Search by developer name" />
+              <input class="input input--text" id="formInput#search" type="text" name="search"
+                placeholder="Search by developer name" value="{{search}}" />
             </div>
 
             <input class="btn btn--sub btn--lg" type="submit" value="Search" />
@@ -55,7 +55,27 @@
         </div>
       </div>
     </section>
+  {% if profiles.has_other_pages %}
+    <div class="pagination">
+      <ul class="container">
+        {% if profiles.has_previous %}
+          <li><a href="?page={{profiles.previous_page_number}}&search={{search}}" class="btn">&#10094; Prev</a></li>
+        {% endif %}
 
+        {% for page in paginator.page_range %}
+        {% if page == profiles.number %}
+          <li><a href="?page={{page}}&search={{search}}" class="btn page-link btn--sub">{{page}}</a></li>
+        {% else %}
+          <li><a href="?page={{page}}&search={{search}}" class="btn page-link">{{page}}</a></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if profiles.has_next %}
+          <li><a href="?page={{profiles.next_page_number}}&search={{search}}" class="btn">Next &#10095;</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  {% endif %}
   </main>
 
 {% endblock content %}
