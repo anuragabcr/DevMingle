@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function () {
         let target = event.target
         if(target.classList.contains('alert__close')) {
             alertWrapper.style.display = 'none'
-            alert("Button clicked!");
         }
     });
 });

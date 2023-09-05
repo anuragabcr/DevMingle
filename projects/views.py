@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib import messages
 from .models import Project, Tag
-from .forms import ProjectForm
+from .forms import ProjectForm, ReviewForm
 
 
 def projects(request):
@@ -30,7 +31,21 @@ def projects(request):
 def project(request, pk):
     data = Project.objects.get(id=pk)
     tags = data.tags.all()
-    return render(request, 'projects/project.html', {'project': data, 'tags': tags})
+    form = ReviewForm()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.project = data
+            review.owner = request.user.profile
+            review.save()
+            data.updateReview
+            messages.success(request, 'Review Created')
+        else:
+            messages.error(request, form.errors or 'Error occurred during review')
+        return redirect('project', pk=data.id)
+
+    return render(request, 'projects/project.html', {'project': data, 'tags': tags, 'form': form})
 
 
 @login_required(login_url='login')
