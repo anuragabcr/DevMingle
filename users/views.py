@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .forms import CustomUserCreationForm, ProfileForm, SkillForm
+from .forms import CustomUserCreationForm, ProfileForm, SkillForm, MessageForm
 from .models import Profile, Skill
 
 
@@ -38,6 +38,42 @@ def profiles(request):
 @login_required(login_url='login')
 def account(request):
     return render(request, 'users/account.html', {'profile': request.user.profile})
+
+
+@login_required(login_url='login')
+def inbox(request):
+    profileData = request.user.profile
+    data = profileData.messages.all()
+    unread = data.filter(is_read=False).count()
+    return render(request, 'users/inbox.html', {'messageData': data, 'unread': unread})
+
+
+@login_required(login_url='login')
+def message(request, pk):
+    profileData = request.user.profile
+    data = profileData.messages.get(id=pk)
+    if not data.is_read:
+        data.is_read = True
+        data.save()
+    return render(request, 'users/message.html', {'message': data})
+
+
+def sendMessage(request, pk):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            messageData = form.save(commit=False)
+            if request.user.is_authenticated:
+                messageData.sender = request.user.profile
+            messageData.recipient = Profile.objects.get(id=pk)
+            messageData.save()
+
+            messages.success(request, 'Message sent successful')
+        else:
+            messages.success(request, form.errors or 'Error occurred during messaging')
+
+        return redirect('profile', pk)
+    return render(request, 'users/message_form.html', {'form': MessageForm(), 'pk': pk})
 
 
 @login_required(login_url='login')
